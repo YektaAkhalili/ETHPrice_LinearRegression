@@ -21,6 +21,8 @@ New_Add = sm.add_constant(X, prepend=False)
 print(New_Add.columns.get_loc("ETH"))
 print(New_Add.columns.get_loc("Volume"))
 print(New_Add.columns.get_loc("Market Cap"))
+
+#to know if this "feature" should be added or not
 vif_ETH = variance_inflation_factor(np.array(New_Add),0)
 vif_Vol = variance_inflation_factor(np.array(New_Add),1)
 vif_MC = variance_inflation_factor(np.array(New_Add),1)
@@ -29,14 +31,16 @@ print(vif_ETH, vif_MC)
 #Model "New"
 modelNew = sm.OLS(np.log(Y), np.log(New_Add))
 resultNew = modelNew.fit()
+
 #errors for this model
 errors = resultNew.resid
 print(resultNew.summary())
+
 #predicting the prices using this model
 predictions = resultNew.predict(Y)
 print(predictions)
 
-visualize errors - looks normal! Jarque bera to test normality of resids
+#visualize errors - looks normal! 
 plt.hist(errors)
 plt.title("Errors of Model ")
 plt.show()
